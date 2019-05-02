@@ -45,5 +45,13 @@ app.get('/' , (req, res) => {
   });
 });
 
+app.get('/app', (req, res) => {
+  if(req.session.currentUser){
+    res.render('app/index.ejs');
+  } else {
+    res.redirect('/sessions/new');
+  };
+});
+
 // LISTENER //
 app.listen(PORT, () => console.log( 'Listening on port:', PORT));

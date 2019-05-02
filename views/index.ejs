@@ -9,6 +9,7 @@
     <div class="container">
       <%if(currentUser){%>
         <h2>Welcome <%=currentUser.username%></h2>
+        <h2><a href="/app">CHAT</a></h2>
         <form action="/sessions?_method=DELETE" method="POST">
           <input type="submit" value="Log Out">
         </form>
