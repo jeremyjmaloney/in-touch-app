@@ -1,0 +1,30 @@
+{
+  "name": "in-touch-app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "11.12.0"
+  },
+  "description": "in.touch application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeremyjmaloney/in-touch-app.git"
+  },
+  "author": "Jeremy Maloney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeremyjmaloney/in-touch-app/issues"
+  },
+  "homepage": "https://github.com/jeremyjmaloney/in-touch-app#readme",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.5.5"
+  }
+}
