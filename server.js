@@ -4,6 +4,11 @@ const methodOverride  = require('method-override');
 const mongoose = require ('mongoose');
 require('dotenv').config();
 const app = express ();
+const userController = require('./controllers/users.js');
+const sessionsController = require('./controllers/sessions.js');
+const session = require('express-session');
+
+// CONNECTIONS //
 const db = mongoose.connection;
 const PORT = process.env.PORT || 3000;
 
@@ -23,13 +28,21 @@ db.on('open' , ()=>{});
 
 // MIDDLEWARE //
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 app.use(methodOverride('_method'));
+app.use(express.urlencoded({ extended: false }));
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use('/users', userController);
+app.use('/sessions', sessionsController);
 
 // ROUTES //
 app.get('/' , (req, res) => {
-  res.render('index.ejs');
+  res.render('index.ejs', {
+    currentUser: req.session.currentUser
+  });
 });
 
 // LISTENER //

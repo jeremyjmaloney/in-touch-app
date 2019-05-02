@@ -7,8 +7,13 @@
   <body>
     <h1>in.Touch</h1>
     <div class="container">
-      <h2><a class="button" href="#">New Account</a></h2>
-      <h2><a class="button" href="#">Log In</a></h2>
+      <%if(currentUser){%>
+        <h2>Welcome <%=currentUser.username%></h2>
+        <h2><a href="/sessions/">Log Out</a></h2>
+      <%} else {%>
+        <h2><a class="button" href="/users/new">New Account</a></h2>
+        <h2><a class="button" href="/sessions/new">Log In</a></h2>
+      <%}%>
     </div>
   </body>
 </html>
