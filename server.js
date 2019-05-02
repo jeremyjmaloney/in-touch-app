@@ -3,10 +3,11 @@ const express = require('express');
 const methodOverride  = require('method-override');
 const mongoose = require ('mongoose');
 require('dotenv').config();
-const app = express ();
+const app = express();
 const userController = require('./controllers/users.js');
 const sessionsController = require('./controllers/sessions.js');
 const session = require('express-session');
+const Message = require('./models/messages.js');
 
 // CONNECTIONS //
 const db = mongoose.connection;
@@ -37,6 +38,9 @@ app.use(session({
 }));
 app.use('/users', userController);
 app.use('/sessions', sessionsController);
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 
 // ROUTES //
 app.get('/' , (req, res) => {
@@ -44,6 +48,22 @@ app.get('/' , (req, res) => {
     currentUser: req.session.currentUser
   });
 });
+
+app.get('/app/messages', (req, res) => {
+  Message.create({message: req.body.message}, (error, messages)=> {
+    if(error){
+      res.send(error);
+    } else {
+      res.send(messages);
+    };
+  });
+});
+
+// app.post('/app', (req, res) => {
+//   Message.find({}, (error, messages)=>{
+//     console.log(messages);
+//   });
+// });
 
 app.get('/app', (req, res) => {
   if(req.session.currentUser){
