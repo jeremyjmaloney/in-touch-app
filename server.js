@@ -49,21 +49,20 @@ app.get('/' , (req, res) => {
   });
 });
 
-app.get('/app/messages', (req, res) => {
-  Message.create({message: req.body.message}, (error, messages)=> {
-    if(error){
-      res.send(error);
-    } else {
-      res.send(messages);
-    };
+app.get('/app', (req, res) => {
+  Message.find({}, (error, allMessages)=> {
+    console.log(allMessages);
+    res.render('app/index.ejs', {
+      messages: allMessages
+    });
   });
 });
 
-// app.post('/app', (req, res) => {
-//   Message.find({}, (error, messages)=>{
-//     console.log(messages);
-//   });
-// });
+app.post('/app', (req, res)=>{
+  Message.create(req.body, (error, createdMessage)=>{
+    res.redirect('/app');
+  });
+});
 
 app.get('/app', (req, res) => {
   if(req.session.currentUser){
