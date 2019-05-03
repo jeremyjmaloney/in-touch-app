@@ -4,6 +4,8 @@ const methodOverride  = require('method-override');
 const mongoose = require ('mongoose');
 require('dotenv').config();
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const userController = require('./controllers/users.js');
 const sessionsController = require('./controllers/sessions.js');
 const session = require('express-session');
@@ -27,6 +29,11 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 
 // OPEN CONNECTION TO MONGO //
 db.on('open' , ()=>{});
+
+// SOCKET IO CONNECTION //
+io.on('connection', (socket) => {
+  console.log('new user has connected');
+})
 
 // MIDDLEWARE //
 app.use(express.static('public'));
@@ -63,7 +70,6 @@ app.get('/app', (req, res) => {
 });
 
 app.post('/app', (req, res)=>{
-  // console.log(req.body);
   let newMessage = {
     name: req.session.currentUser.username,
     message: req.body.message
@@ -75,4 +81,5 @@ app.post('/app', (req, res)=>{
 });
 
 // LISTENER //
-app.listen(PORT, () => console.log( 'Listening on port:', PORT));
+// app.listen(PORT, () => console.log( 'Listening on port:', PORT));
+server.listen(PORT, () => console.log( 'Listening on port:', PORT));
