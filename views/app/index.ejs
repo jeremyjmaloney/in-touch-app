@@ -2,22 +2,26 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <script src=”/socket.io/socket.io.js”></script>
-    <script>
-      let socket = io.connect('http://localhost');
-    </script>
     <title>MAIN CHAT</title>
   </head>
   <body>
     <h2>MAIN CHAT</h2>
     <form action="/app" method="POST">
-      <input placeholder="Message..." type="text" name="message" required>
-      <input type="submit" value="SEND">
+      <input class="message" placeholder="Message..." type="text" name="message" required>
+      <input class="send" type="submit" value="SEND">
       <div class="message-box">
         <%for(let i = 0; i < messages.length; i++){%>
           <%=messages[i].name%> : <%=messages[i].message%><br>
         <%}%>
       </div>
     </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io.connect();
+      socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+      });
+    </script>
   </body>
 </html>

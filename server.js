@@ -1,7 +1,7 @@
 // DEPENDENCIES //
 const express = require('express');
 const methodOverride  = require('method-override');
-const mongoose = require ('mongoose');
+const mongoose = require('mongoose');
 require('dotenv').config();
 const app = express();
 const server = require('http').Server(app);
@@ -31,9 +31,12 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 db.on('open' , ()=>{});
 
 // SOCKET IO CONNECTION //
-io.on('connection', (socket) => {
-  console.log('new user has connected');
-})
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 
 // MIDDLEWARE //
 app.use(express.static('public'));
@@ -76,10 +79,13 @@ app.post('/app', (req, res)=>{
   };
   Message.create(newMessage, (error, createdMessage)=>{
     console.log(newMessage);
+    io.emit('newMessage');
     res.redirect('/app');
   });
 });
 
 // LISTENER //
 // app.listen(PORT, () => console.log( 'Listening on port:', PORT));
-server.listen(PORT, () => console.log( 'Listening on port:', PORT));
+server.listen(PORT, ()=>{
+  console.log(`Listening on port ${PORT}`);
+});
