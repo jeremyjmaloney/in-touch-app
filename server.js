@@ -7,6 +7,7 @@ const app = express();
 const userController = require('./controllers/users.js');
 const sessionsController = require('./controllers/sessions.js');
 const session = require('express-session');
+const User = require('./models/users.js');
 const Message = require('./models/messages.js');
 
 // CONNECTIONS //
@@ -50,26 +51,27 @@ app.get('/' , (req, res) => {
 });
 
 app.get('/app', (req, res) => {
-  Message.find({}, (error, allMessages)=> {
-    console.log(allMessages);
-    res.render('app/index.ejs', {
-      messages: allMessages
-    });
-  });
-});
-
-app.post('/app', (req, res)=>{
-  Message.create(req.body, (error, createdMessage)=>{
-    res.redirect('/app');
-  });
-});
-
-app.get('/app', (req, res) => {
   if(req.session.currentUser){
-    res.render('app/index.ejs');
+    Message.find({}, (error, allMessages)=> {
+      res.render('app/index.ejs', {
+        messages: allMessages
+      });
+    });
   } else {
     res.redirect('/sessions/new');
   };
+});
+
+app.post('/app', (req, res)=>{
+  // console.log(req.body);
+  let newMessage = {
+    name: req.session.currentUser.username,
+    message: req.body.message
+  };
+  Message.create(newMessage, (error, createdMessage)=>{
+    console.log(newMessage);
+    res.redirect('/app');
+  });
 });
 
 // LISTENER //

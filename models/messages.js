@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const messageSchema = Schema({
-  message: String
+  name: String,
+  message: {type:String, required:true}
 });
 
 const Message = mongoose.model('Message', messageSchema);
