@@ -6,6 +6,7 @@ require('dotenv').config();
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const $ = require('jquery');
 const userController = require('./controllers/users.js');
 const sessionsController = require('./controllers/sessions.js');
 const session = require('express-session');
@@ -30,14 +31,6 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 // OPEN CONNECTION TO MONGO //
 db.on('open' , ()=>{});
 
-// SOCKET IO CONNECTION //
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
-
 // MIDDLEWARE //
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
@@ -49,9 +42,18 @@ app.use(session({
 }));
 app.use('/users', userController);
 app.use('/sessions', sessionsController);
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended:false}));
+
+// SOCKET IO CONNECTION //
+io.on('connection', (socket)=>{
+  // console.log('New user connected');
+  socket.on('chat message', (message)=>{
+    console.log('getting message');
+    socket.emit('emitting' + message);
+  });
+});
 
 // ROUTES //
 app.get('/' , (req, res) => {
@@ -72,17 +74,17 @@ app.get('/app', (req, res) => {
   };
 });
 
-app.post('/app', (req, res)=>{
-  let newMessage = {
-    name: req.session.currentUser.username,
-    message: req.body.message
-  };
-  Message.create(newMessage, (error, createdMessage)=>{
-    console.log(newMessage);
-    io.emit('newMessage');
-    res.redirect('/app');
-  });
-});
+// app.post('/app', (req, res)=>{
+//   let newMessage = {
+//     name: req.session.currentUser.username,
+//     message: req.body.message
+//   };
+//   Message.create(newMessage, (error, createdMessage)=>{
+//     console.log(newMessage);
+//     io.emit('newMessage');
+//     res.redirect('/app');
+//   });
+// });
 
 // LISTENER //
 // app.listen(PORT, () => console.log( 'Listening on port:', PORT));
