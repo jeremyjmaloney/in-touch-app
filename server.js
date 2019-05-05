@@ -66,7 +66,8 @@ app.get('/app', (req, res) => {
   if(req.session.currentUser){
     Message.find({}, (error, allMessages)=> {
       res.render('app/index.ejs', {
-        messages: allMessages
+        messages: allMessages,
+        name: req.session.currentUser.username
       });
     });
   } else {
@@ -74,17 +75,16 @@ app.get('/app', (req, res) => {
   };
 });
 
-// app.post('/app', (req, res)=>{
-//   let newMessage = {
-//     name: req.session.currentUser.username,
-//     message: req.body.message
-//   };
-//   Message.create(newMessage, (error, createdMessage)=>{
-//     console.log(newMessage);
-//     io.emit('newMessage');
-//     res.redirect('/app');
-//   });
-// });
+app.post('/app', (req, res)=>{
+  let newMessage = {
+    name: req.session.currentUser.username,
+    message: req.body.message
+  };
+  Message.create(newMessage, (error, createdMessage)=>{
+    console.log(newMessage);
+    res.redirect('/app');
+  });
+});
 
 // LISTENER //
 // app.listen(PORT, () => console.log( 'Listening on port:', PORT));

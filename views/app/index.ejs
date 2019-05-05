@@ -6,11 +6,13 @@
   </head>
   <body>
     <h2>MAIN CHAT</h2>
-    <ul id="messages"></ul>
-    <!-- <%for(let i = 0; i < messages.length; i++){%>
-      <%=messages[i].name%> : <%=messages[i].message%><br>
-    <%}%> -->
-    <form id="message-form" action="" method=""> <!-- /app, POST -->
+    <h3 id="user"><%=name%></h3>
+    <ul id="messages">
+      <%for(let i = 0; i < messages.length; i++){%>
+        <%=messages[i].name%> : <%=messages[i].message%><br>
+      <%}%>
+    </ul>
+    <form id="message-form" action="/app" method="POST"> <!-- /app, POST -->
       <input placeholder="Message..." id="message" autocomplete="off">
       <button type="submit" id="submit">SEND</button>
     </form>
@@ -18,13 +20,15 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
       $(()=>{
+        console.log(name);
         console.log('im running client function');
-        let socket = io.connect();
+        let socket = io();
         $('form').on('submit', (event)=>{
           console.log('im emiting message');
-          event.preventDefault();
+          // event.preventDefault();
           socket.emit('chat message', $('#message').val());
-          $('#messages').append($('<li>').text($('#message').val()));
+          $('#messages').append($('<li>').text($('#user').text() + ': ' + $('#message').val()));
+          $('#message').val('');
           return false;
         });
         socket.on('emitting', (message)=>{
