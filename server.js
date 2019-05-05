@@ -48,10 +48,10 @@ app.use('/sessions', sessionsController);
 
 // SOCKET IO CONNECTION //
 io.on('connection', (socket)=>{
-  // console.log('New user connected');
+  console.log('New user connected');
   socket.on('chat message', (message)=>{
-    console.log('getting message');
-    socket.emit('emitting' + message);
+    console.log('getting message on server');
+    socket.emit('emitting', (message));
   });
 });
 

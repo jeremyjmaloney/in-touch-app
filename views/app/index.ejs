@@ -29,7 +29,7 @@
         socket.on('emitting', (message)=>{
           console.log('im receiving message back');
           $('#messages').append($('<li>').text(message));
-          window.scrillTo(0, document.body.scrollHeight);
+          window.scrollTo(0, document.body.scrollHeight);
         });
       });
     </script>
