@@ -24,6 +24,7 @@
           console.log('im emiting message');
           event.preventDefault();
           socket.emit('chat message', $('#message').val());
+          $('#messages').append($('<li>').text($('#message').val()));
           return false;
         });
         socket.on('emitting', (message)=>{

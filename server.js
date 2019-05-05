@@ -51,7 +51,7 @@ io.on('connection', (socket)=>{
   console.log('New user connected');
   socket.on('chat message', (message)=>{
     console.log('getting message on server');
-    socket.emit('emitting', (message));
+    socket.broadcast.emit('emitting', (message));
   });
 });
 
