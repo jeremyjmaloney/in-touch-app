@@ -29,14 +29,14 @@
           let $name = $('#user').text();
           let $message = $('#message').val();
           console.log($name, $message);
-          socket.emit('chat message', ($name, $message));
+          socket.emit('chat message', {name: $name, message: $message});
           $('#messages').append($('<li>').text($name + ': ' + $message));
           $('#message').val('');
           return false;
         });
-        socket.on('emitting', (name, message)=>{
+        socket.on('emitting', (data)=>{
           console.log('im receiving message back');
-          $('#messages').append($('<li>').text(`${name}: ${message}`));
+          $('#messages').append($('<li>').text(`${data.name}: ${data.message}`));
           window.scrollTo(0, document.body.scrollHeight);
         });
       });

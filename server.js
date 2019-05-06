@@ -49,16 +49,16 @@ app.use(bodyParser.urlencoded({extended:false}));
 // SOCKET IO CONNECTION //
 io.on('connection', (socket)=>{
   console.log('New user connected');
-  socket.on('chat message', (name, message)=>{
+  socket.on('chat message', (data)=>{
     console.log('getting message on server');
     let newMessage = {
-      name: name,
-      message: message
+      name: data.name,
+      message: data.message
     };
     Message.create(newMessage, (error, createdMessage)=>{
       console.log(newMessage);
     });
-    socket.broadcast.emit('emitting', (name, message));
+    socket.broadcast.emit('emitting', (data));
   });
 });
 
