@@ -28,8 +28,9 @@
           event.preventDefault();
           let $name = $('#user').text();
           let $message = $('#message').val();
-          socket.emit('chat message', ($name, $message));
-          $('#messages').append($('<li>').text($name + ': ' + $message);
+          console.log($name, $message);
+          socket.emit('chat message', $name, $message);
+          $('#messages').append($('<li>').text($name + ': ' + $message));
           $('#message').val('');
           return false;
         });
