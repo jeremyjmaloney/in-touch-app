@@ -36,7 +36,7 @@
         });
         socket.on('emitting', (name, message)=>{
           console.log('im receiving message back');
-          $('#messages').append($('<li>').text(name + ": " + message));
+          $('#messages').append($('<li>').text(`${name}: ${message}`));
           window.scrollTo(0, document.body.scrollHeight);
         });
       });
