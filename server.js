@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const io = require('socket.io').listen(server, {
+  pingTimeout: 60000 // chrome was causing idle errors
+});
 const $ = require('jquery');
 const userController = require('./controllers/users.js');
 const sessionsController = require('./controllers/sessions.js');
@@ -47,8 +49,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
 // SOCKET IO CONNECTION //
+const connectedUsers = [];
 io.on('connection', (socket)=>{
   console.log('New user connected');
+  console.log(socket.id);
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
   socket.on('chat message', (data)=>{
     console.log('getting message on server');
     let newMessage = {
@@ -74,8 +81,9 @@ app.get('/app', (req, res) => {
     Message.find({}, (error, allMessages)=> {
       res.render('app/index.ejs', {
         messages: allMessages,
-        name: req.session.currentUser.username
+        user: req.session.currentUser
       });
+      console.log(req.session.currentUser._id);
     });
   } else {
     res.redirect('/sessions/new');

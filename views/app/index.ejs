@@ -6,10 +6,12 @@
   </head>
   <body>
     <h2>MAIN CHAT</h2>
-    <h3 id="user"><%=name%></h3>
+    <%let thisUser = user%>
+    <h3 id="user"><%=thisUser.username%></h3>
+    <a href="/">BACK</a>
     <ul id="messages">
       <%for(let i = 0; i < messages.length; i++){%>
-        <%=messages[i].name%> : <%=messages[i].message%><br>
+        <li><%=messages[i].name%> : <%=messages[i].message%></li>
       <%}%>
     </ul>
     <form id="message-form" action="" method=""> <!-- /app, POST -->
@@ -20,9 +22,12 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
       $(()=>{
-        console.log(name);
         console.log('im running client function');
         let socket = io();
+        socket.on('connect', ()=>{
+          let id = socket.id;
+          console.log(id);
+        });
         $('form').on('submit', (event)=>{
           console.log('im emiting message');
           event.preventDefault();
