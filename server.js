@@ -60,7 +60,8 @@ io.on('connection', (socket)=>{
     console.log('getting message on server');
     let newMessage = {
       name: data.name,
-      message: data.message
+      message: data.message,
+      room: data.room
     };
     Message.create(newMessage, (error, createdMessage)=>{
       console.log(newMessage);
@@ -78,8 +79,22 @@ app.get('/' , (req, res) => {
 
 app.get('/app', (req, res) => {
   if(req.session.currentUser){
-    Message.find({}, (error, allMessages)=> {
+    Message.find({'room': 'main chat'}, (error, allMessages)=> {
       res.render('app/index.ejs', {
+        messages: allMessages,
+        user: req.session.currentUser
+      });
+      console.log(req.session.currentUser._id);
+    });
+  } else {
+    res.redirect('/sessions/new');
+  };
+});
+
+app.get('/app/development', (req, res) => {
+  if(req.session.currentUser){
+    Message.find({'room': 'development'}, (error, allMessages)=> {
+      res.render('app/development.ejs', {
         messages: allMessages,
         user: req.session.currentUser
       });

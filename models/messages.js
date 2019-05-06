@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const messageSchema = Schema({
   name: String,
-  message: {type:String, required:true}
+  message: {type:String, required:true},
+  room: String
 });
 
 const Message = mongoose.model('Message', messageSchema);
