@@ -26,8 +26,10 @@
         $('form').on('submit', (event)=>{
           console.log('im emiting message');
           event.preventDefault();
-          socket.emit('chat message', $('#user').text(), $('#message').val());
-          $('#messages').append($('<li>').text($('#user').text() + ': ' + $('#message').val()));
+          let $name = $('#user').text();
+          let $message = $('#message').val();
+          socket.emit('chat message', ($name, $message));
+          $('#messages').append($('<li>').text($name + ': ' + $message);
           $('#message').val('');
           return false;
         });
