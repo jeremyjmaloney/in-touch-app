@@ -58,7 +58,7 @@ io.on('connection', (socket)=>{
     Message.create(newMessage, (error, createdMessage)=>{
       console.log(createdMessage);
     });
-    socket.broadcast.emit('emitting', (message));
+    socket.broadcast.emit('emitting', (name, message));
   });
 });
 
