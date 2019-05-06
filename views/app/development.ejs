@@ -5,6 +5,7 @@
     <title>DEVELOPMENT</title>
   </head>
   <body>
+    <h1>in.Touch</h1>
     <%let thisUser = user%>
     <h3 id="user"><%=thisUser.username%></h3>
     <a href="/app"><h2>MAIN CHAT</h2></a>
@@ -35,12 +36,12 @@
           let $name = $('#user').text();
           let $message = $('#message').val();
           console.log($name, $message);
-          socket.emit('chat message', {name: $name, message: $message, room: 'development'});
+          socket.emit('chat message', {name: $name, message: $message, room: 'dev'});
           $('#messages').append($('<li>').text($name + ': ' + $message));
           $('#message').val('');
           return false;
         });
-        socket.on('emitting', (data)=>{
+        socket.on('dev', (data)=>{
           console.log('im receiving message back');
           $('#messages').append($('<li>').text(`${data.name}: ${data.message}`));
           window.scrollTo(0, document.body.scrollHeight);

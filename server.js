@@ -66,7 +66,7 @@ io.on('connection', (socket)=>{
     Message.create(newMessage, (error, createdMessage)=>{
       console.log(newMessage);
     });
-    socket.broadcast.emit('emitting', (data));
+    socket.broadcast.emit(`${data.room}`, (data));
   });
 });
 
@@ -79,7 +79,7 @@ app.get('/' , (req, res) => {
 
 app.get('/app', (req, res) => {
   if(req.session.currentUser){
-    Message.find({'room': 'main chat'}, (error, allMessages)=> {
+    Message.find({'room': 'main'}, (error, allMessages)=> {
       res.render('app/index.ejs', {
         messages: allMessages,
         user: req.session.currentUser
@@ -93,7 +93,7 @@ app.get('/app', (req, res) => {
 
 app.get('/app/development', (req, res) => {
   if(req.session.currentUser){
-    Message.find({'room': 'development'}, (error, allMessages)=> {
+    Message.find({'room': 'dev'}, (error, allMessages)=> {
       res.render('app/development.ejs', {
         messages: allMessages,
         user: req.session.currentUser
