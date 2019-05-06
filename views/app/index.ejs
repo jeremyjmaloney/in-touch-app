@@ -12,9 +12,9 @@
         <%=messages[i].name%> : <%=messages[i].message%><br>
       <%}%>
     </ul>
-    <form id="message-form" action="/app" method="POST"> <!-- /app, POST -->
+    <form id="message-form" action="" method=""> <!-- /app, POST -->
       <input placeholder="Message..." id="message" autocomplete="off">
-      <button type="submit" id="submit">SEND</button>
+      <input type="submit" id="submit" value="SEND">
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -25,8 +25,8 @@
         let socket = io();
         $('form').on('submit', (event)=>{
           console.log('im emiting message');
-          // event.preventDefault();
-          socket.emit('chat message', $('#message').val());
+          event.preventDefault();
+          socket.emit('chat message', $('#user').text(), $('#message').val());
           $('#messages').append($('<li>').text($('#user').text() + ': ' + $('#message').val()));
           $('#message').val('');
           return false;

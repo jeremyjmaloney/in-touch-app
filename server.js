@@ -42,15 +42,22 @@ app.use(session({
 }));
 app.use('/users', userController);
 app.use('/sessions', sessionsController);
-// const bodyParser = require('body-parser');
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended:false}));
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 
 // SOCKET IO CONNECTION //
 io.on('connection', (socket)=>{
   console.log('New user connected');
-  socket.on('chat message', (message)=>{
+  socket.on('chat message', (name, message)=>{
     console.log('getting message on server');
+    let newMessage = {
+      name: name,
+      message: message
+    };
+    Message.create(newMessage, (error, createdMessage)=>{
+      console.log(createdMessage);
+    });
     socket.broadcast.emit('emitting', (message));
   });
 });
@@ -75,16 +82,16 @@ app.get('/app', (req, res) => {
   };
 });
 
-app.post('/app', (req, res)=>{
-  let newMessage = {
-    name: req.session.currentUser.username,
-    message: req.body.message
-  };
-  Message.create(newMessage, (error, createdMessage)=>{
-    console.log(newMessage);
-    res.redirect('/app');
-  });
-});
+// app.post('/app', (req, res)=>{
+//   let newMessage = {
+//     name: req.session.currentUser.username,
+//     message: req.body.message
+//   };
+//   Message.create(newMessage, (error, createdMessage)=>{
+//     console.log(newMessage);
+//     res.redirect('/app');
+//   });
+// });
 
 // LISTENER //
 // app.listen(PORT, () => console.log( 'Listening on port:', PORT));
