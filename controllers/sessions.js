@@ -9,11 +9,15 @@ sessions.get('/new', (req, res) => {
 
 sessions.post('/', (req, res) => {
   User.findOne({ username: req.body.username }, (err, foundUser) => {
-    if(bcrypt.compareSync(req.body.password, foundUser.password)){
-      req.session.currentUser = foundUser;
-      res.redirect('/');
+    if(foundUser){
+      if(bcrypt.compareSync(req.body.password, foundUser.password)){
+        req.session.currentUser = foundUser;
+        res.redirect('/');
+      } else {
+        res.send('<a href="/">wrong username or password</a>');
+      };
     } else {
-      res.send('<a href="/">wrong password</a>');
+      res.send('<a href="/">wrong username or password</a>');
     };
   });
 });
