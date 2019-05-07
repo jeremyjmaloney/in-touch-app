@@ -11,11 +11,19 @@
     <a href="/app"><h2>MAIN CHAT</h2></a>
     <a href="/app/development"><h2>DEVELOPMENT</h2></a>
     <a href="/">BACK</a>
-    <ul id="messages">
+    <div id="messages">
       <%for(let i = 0; i < messages.length; i++){%>
-        <li><%=messages[i].name%> : <%=messages[i].message%></li>
+        <%if(messages[i].message.substring(0, 4) == 'http'){%>
+          <div class="msg">
+            <p><%=messages[i].name%></p>
+            <a href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a></div>
+        <%} else {%>
+          <div class="msg">
+          <p><%=messages[i].name%></p>
+          <p><%=messages[i].message%></p>
+        <%}%>
       <%}%>
-    </ul>
+    </div>
     <form id="message-form" action="" method=""> <!-- /app, POST -->
       <input placeholder="Message..." id="message" autocomplete="off">
       <input type="submit" id="submit" value="SEND">
@@ -37,13 +45,21 @@
           let $message = $('#message').val();
           console.log($name, $message);
           socket.emit('chat message', {name: $name, message: $message, room: 'main'});
-          $('#messages').append($('<li>').text($name + ': ' + $message));
+          if($message.substring(0, 4) == 'http'){
+            $('#messages').append($('<a>').attr('href', $message).attr('target', '_blank').text($name + ': ' + $message));
+          } else {
+            $('#messages').append($('<p>').text($name + ': ' + $message));
+          };
           $('#message').val('');
           return false;
         });
         socket.on('main', (data)=>{
           console.log('im receiving message back');
-          $('#messages').append($('<li>').text(`${data.name}: ${data.message}`));
+          if(data.message.substring(0, 4) == 'http'){
+            $('#messages').append($('<a>').attr('href', data.message).attr('target', '_blank').text(`${data.name}: ${data.message}`));
+          } else {
+            $('#messages').append($('<p>').text(`${data.name}: ${data.message}`));
+          };
           window.scrollTo(0, document.body.scrollHeight);
         });
       });
