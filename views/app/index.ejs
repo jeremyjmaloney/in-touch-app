@@ -14,13 +14,29 @@
     <div id="messages">
       <%for(let i = 0; i < messages.length; i++){%>
         <%if(messages[i].message.substring(0, 4) == 'http'){%>
-          <div class="msg">
-            <p><%=messages[i].name%></p>
-            <a href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a></div>
+          <%if(messages[i].name == thisUser.username){%>
+            <div class="msg mine">
+              <p><%=messages[i].name%></p>
+              <a href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
+            </div>
+          <%} else {%>
+            <div class="msg">
+              <p><%=messages[i].name%></p>
+              <a href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
+            </div>
+          <%}%>
         <%} else {%>
-          <div class="msg">
-          <p><%=messages[i].name%></p>
-          <p><%=messages[i].message%></p>
+          <%if(messages[i].name == thisUser.username){%>
+            <div class="msg mine">
+              <p><%=messages[i].name%></p>
+              <p><%=messages[i].message%></p>
+            </div>
+          <%} else {%>
+            <div class="msg">
+              <p><%=messages[i].name%></p>
+              <p><%=messages[i].message%></p>
+            </div>
+          <%}%>
         <%}%>
       <%}%>
     </div>
@@ -43,22 +59,32 @@
           event.preventDefault();
           let $name = $('#user').text();
           let $message = $('#message').val();
+          let $div = $('<div>').attr('class', 'msg');
           console.log($name, $message);
           socket.emit('chat message', {name: $name, message: $message, room: 'main'});
           if($message.substring(0, 4) == 'http'){
-            $('#messages').append($('<a>').attr('href', $message).attr('target', '_blank').text($name + ': ' + $message));
+            $div.addClass('mine').append('<p>').text($name);
+            $div.append($('<a>').attr('href', $message).attr('target', '_blank').text($message));
+            $('#messages').append($div);
           } else {
-            $('#messages').append($('<p>').text($name + ': ' + $message));
+            $div.addClass('mine').append($('<p>').text($name));
+            $div.append($('<p>').text($message));
+            $('#messages').append($div);
           };
           $('#message').val('');
           return false;
         });
         socket.on('main', (data)=>{
           console.log('im receiving message back');
+          let $div = $('<div>').attr('class', 'msg');
           if(data.message.substring(0, 4) == 'http'){
-            $('#messages').append($('<a>').attr('href', data.message).attr('target', '_blank').text(`${data.name}: ${data.message}`));
+            $div.append('<p>').text(data.name);
+            $div.append($('<a>').attr('href', data.message).attr('target', '_blank').text(data.message));
+            $('#messages').append($div);
           } else {
-            $('#messages').append($('<p>').text(`${data.name}: ${data.message}`));
+            $div.append($('<p>').text(data.name));
+            $div.append($('<p>').text(data.message));
+            $('#messages').append($div);
           };
           window.scrollTo(0, document.body.scrollHeight);
         });
