@@ -90,18 +90,20 @@ p {
 #message-form {
   width: 74%;
   height: 5%;
-  position: fixed;
+  position: absolute;
   top: 93%;
   left: 25%;
-  display: inline-block;
+  display: inline;
+  overflow: hidden;
 }
 input {
-  width: 85%;
+  width: 80%;
   font-size: 3em;
 }
 input[type=submit]{
   border: none;
   width: 10%;
   font-size: 3em;
+  margin-left: 2%;
   background-color: #ff6a68;
 }
