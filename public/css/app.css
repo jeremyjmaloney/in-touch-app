@@ -55,6 +55,7 @@ aside {
   padding-right: 1%;
   background-color: #0451ab;
   text-align: center;
+  overflow: scroll;
 }
 #messages {
   position: fixed;
