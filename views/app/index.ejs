@@ -2,40 +2,43 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../public/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
     <title>MAIN CHAT</title>
   </head>
   <body>
-    <h1>in.Touch</h1>
-    <%let thisUser = user%>
-    <h3 id="user"><%=thisUser.username%></h3>
-    <a href="/app"><h2>MAIN CHAT</h2></a>
-    <a href="/app/development"><h2>DEVELOPMENT</h2></a>
-    <a href="/">BACK</a>
+    <aside>
+      <h1>in.Touch</h1>
+      <%let thisUser = user%>
+      <h2 id="user"><%=thisUser.username%></h2>
+      <a class="button" href="/app">MAIN CHAT</a>
+      <a class="button" href="/app/development">DEVELOPMENT</a>
+      <a class="button" href="/">BACK</a>
+    </aside>
     <div id="messages">
       <%for(let i = 0; i < messages.length; i++){%>
         <%if(messages[i].message.substring(0, 4) == 'http'){%>
           <%if(messages[i].name == thisUser.username){%>
             <div class="msg mine">
               <p><%=messages[i].name%></p>
-              <a href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
+              <a class="indent" href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
             </div>
           <%} else {%>
             <div class="msg">
               <p><%=messages[i].name%></p>
-              <a href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
+              <a class="indent" href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
             </div>
           <%}%>
         <%} else {%>
           <%if(messages[i].name == thisUser.username){%>
             <div class="msg mine">
               <p><%=messages[i].name%></p>
-              <p><%=messages[i].message%></p>
+              <p class="indent"><%=messages[i].message%></p>
             </div>
           <%} else {%>
             <div class="msg">
               <p><%=messages[i].name%></p>
-              <p><%=messages[i].message%></p>
+              <p class="indent"><%=messages[i].message%></p>
             </div>
           <%}%>
         <%}%>
@@ -50,6 +53,12 @@
     <script>
       $(()=>{
         console.log('im running client function');
+        const scrollSki = () =>{
+          $('#messages').animate({
+            scrollTop: $('#messages').get(0).scrollHeight
+          }, 1000);
+        };
+        scrollSki();
         let socket = io();
         socket.on('connect', ()=>{
           let id = socket.id;
@@ -65,14 +74,15 @@
           socket.emit('chat message', {name: $name, message: $message, room: 'main'});
           if($message.substring(0, 4) == 'http'){
             $div.addClass('mine').append('<p>').text($name);
-            $div.append($('<a>').attr('href', $message).attr('target', '_blank').text($message));
+            $div.append($('<a>').addClass('indent').attr('href', $message).attr('target', '_blank').text($message));
             $('#messages').append($div);
           } else {
             $div.addClass('mine').append($('<p>').text($name));
-            $div.append($('<p>').text($message));
+            $div.append($('<p>').addClass('indent').text($message));
             $('#messages').append($div);
           };
           $('#message').val('');
+          scrollSki();
           return false;
         });
         socket.on('main', (data)=>{
@@ -80,14 +90,14 @@
           let $div = $('<div>').attr('class', 'msg');
           if(data.message.substring(0, 4) == 'http'){
             $div.append('<p>').text(data.name);
-            $div.append($('<a>').attr('href', data.message).attr('target', '_blank').text(data.message));
+            $div.append($('<a>').addClass('indent').attr('href', data.message).attr('target', '_blank').text(data.message));
             $('#messages').append($div);
           } else {
             $div.append($('<p>').text(data.name));
-            $div.append($('<p>').text(data.message));
+            $div.append($('<p>').addClass('indent').text(data.message));
             $('#messages').append($div);
           };
-          window.scrollTo(0, document.body.scrollHeight);
+          scrollSki();
         });
       });
     </script>

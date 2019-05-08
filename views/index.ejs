@@ -11,9 +11,9 @@
       <h1>in.Touch</h1>
       <%if(currentUser){%>
         <h2>Welcome <%=currentUser.username%></h2>
-        <a class="button" href="/app">GET IN TOUCH</a></h2>
+        <a class="button" href="/app">GET IN TOUCH</a>
         <form action="/sessions?_method=DELETE" method="POST">
-          <input type="submit" value="Log Out">
+          <input class="button" type="submit" value="Log Out">
         </form>
       <%} else {%>
         <a class="button" href="/users/new">New Account</a>
