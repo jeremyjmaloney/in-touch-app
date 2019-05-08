@@ -51,14 +51,15 @@ aside {
   float: left;
   height: 100%;
   width: 20%;
-  padding: 1%;
+  padding-left: 1%;
+  padding-right: 1%;
   background-color: #0451ab;
   text-align: center;
 }
 #messages {
   position: fixed;
   width: 76%;
-  height: 93%;
+  height: 90%;
   margin-left: 24%;
   right: 0;
   top: 0;
@@ -89,9 +90,9 @@ p {
 }
 #message-form {
   width: 74%;
-  height: 5%;
+  height: 10%;
   position: absolute;
-  top: 93%;
+  top: 90%;
   left: 25%;
   display: inline;
   overflow: hidden;
