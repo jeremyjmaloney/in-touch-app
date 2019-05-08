@@ -14,10 +14,10 @@ sessions.post('/', (req, res) => {
         req.session.currentUser = foundUser;
         res.redirect('/');
       } else {
-        res.send('<a href="/">wrong username or password</a>');
+        res.render('sessions/invalid.ejs');
       };
     } else {
-      res.send('<a href="/">wrong username or password</a>');
+      res.render('sessions/invalid.ejs');
     };
   });
 });
