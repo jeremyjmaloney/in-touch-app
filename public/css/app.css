@@ -100,10 +100,12 @@ p {
 input {
   width: 80%;
   font-size: 3em;
+  border-radius: 12px;
+  padding: 1%;
 }
 input[type=submit]{
   border: none;
-  width: 10%;
+  width: 8%;
   font-size: 3em;
   margin-left: 2%;
   background-color: #ff6a68;
