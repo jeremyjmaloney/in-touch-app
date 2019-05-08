@@ -21,6 +21,10 @@ h1 {
   font-size: 8em;
   color: white;
 }
+h2 {
+  color: white;
+  font-size: 4em;
+}
 a {
   text-decoration: none;
   color: black;
@@ -31,7 +35,15 @@ a {
   background-color: #ff6a68;
   color: white;
   padding: 5%;
-  margin: 5%;
+  margin: 5% auto;
   border: 2px solid white;
+  border-radius: 12px;
+}
+input {
+  width: 100%;
+  font-size: 3em;
+  margin: 5% auto;
+  padding: 2%;
+  border: 1px solid #ff6a68;
   border-radius: 12px;
 }
