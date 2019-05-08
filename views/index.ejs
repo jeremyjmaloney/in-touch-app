@@ -2,20 +2,22 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Welcom Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>in.Touch</title>
   </head>
   <body>
-    <h1>in.Touch</h1>
     <div class="container">
+      <h1>in.Touch</h1>
       <%if(currentUser){%>
         <h2>Welcome <%=currentUser.username%></h2>
-        <h2><a href="/app">CHAT</a></h2>
+        <a class="getInTouch" href="/app">GET IN TOUCH</a></h2>
         <form action="/sessions?_method=DELETE" method="POST">
           <input type="submit" value="Log Out">
         </form>
       <%} else {%>
-        <h2><a class="button" href="/users/new">New Account</a></h2>
-        <h2><a class="button" href="/sessions/new">Log In</a></h2>
+        <a class="button" href="/users/new">New Account</a>
+        <a class="button" href="/sessions/new">Log In</a>
       <%}%>
     </div>
   </body>
