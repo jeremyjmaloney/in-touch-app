@@ -11,16 +11,15 @@
       <h1>in.Touch</h1>
       <%let thisUser = user%>
       <h2 id="user"><%=thisUser.username%></h2>
-      <a class="button" href="/app">MAIN CHAT</a>
-      <a class="button" href="/app/development">DEVELOPMENT</a>
-      <a class="button" href="/">BACK</a>
+      <a class="button room active" href="/app">MAIN CHAT</a>
+      <a class="button room" href="/app/development">DEVELOPMENT</a>
+      <a class="button room" href="/">BACK</a>
     </aside>
     <div id="messages">
       <%for(let i = 0; i < messages.length; i++){%>
         <%if(messages[i].message.substring(0, 4) == 'http'){%>
           <%if(messages[i].name == thisUser.username){%>
             <div class="msg mine">
-              <p><%=messages[i].name%></p>
               <a class="indent" href="<%=messages[i].message%>" target="_blank"> <%=messages[i].message%></a>
             </div>
           <%} else {%>
@@ -32,7 +31,6 @@
         <%} else {%>
           <%if(messages[i].name == thisUser.username){%>
             <div class="msg mine">
-              <p><%=messages[i].name%></p>
               <p class="indent"><%=messages[i].message%></p>
             </div>
           <%} else {%>
@@ -46,7 +44,7 @@
     </div>
     <form id="message-form" action="" method=""> <!-- /app, POST -->
       <input placeholder="Message..." id="message" autocomplete="off">
-      <input type="submit" id="submit" value="SEND">
+      <input type="submit" id="submit" value=">">
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -73,11 +71,11 @@
           console.log($name, $message);
           socket.emit('chat message', {name: $name, message: $message, room: 'main'});
           if($message.substring(0, 4) == 'http'){
-            $div.addClass('mine').append('<p>').text($name);
+            $div.addClass('mine');
             $div.append($('<a>').addClass('indent').attr('href', $message).attr('target', '_blank').text($message));
             $('#messages').append($div);
           } else {
-            $div.addClass('mine').append($('<p>').text($name));
+            $div.addClass('mine');
             $div.append($('<p>').addClass('indent').text($message));
             $('#messages').append($div);
           };
