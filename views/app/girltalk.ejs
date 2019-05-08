@@ -11,9 +11,9 @@
       <h1>in.Touch</h1>
       <%let thisUser = user%>
       <h2 id="user"><%=thisUser.username%></h2>
-      <a class="button room active" href="/app">FAMILY ROOM</a>
+      <a class="button room" href="/app">FAMILY ROOM</a>
       <a class="button room" href="/app/events">EVENTS</a>
-      <a class="button room" href="/app/girltalk">GIRL TALK</a>
+      <a class="button room active" href="/app/girltalk">GIRL TALK</a>
       <a class="button room" href="/app/mancave">MAN CAVE</a>
       <a class="button room" href="#">+</a>
       <a class="button room" href="/">BACK</a>
@@ -71,7 +71,7 @@
           let $name = $('#user').text();
           let $message = $('#message').val();
           let $div = $('<div>').attr('class', 'msg');
-          socket.emit('chat message', {name: $name, message: $message, room: 'family'});
+          socket.emit('chat message', {name: $name, message: $message, room: 'girltalk'});
           if($message.substring(0, 4) == 'http'){
             $div.addClass('mine');
             $div.append($('<a>').addClass('indent').attr('href', $message).attr('target', '_blank').text($message));
@@ -85,7 +85,7 @@
           scrollSki();
           return false;
         });
-        socket.on('family', (data)=>{
+        socket.on('girltalk', (data)=>{
           // console.log('im receiving message back');
           let $div = $('<div>').attr('class', 'msg');
           if(data.message.substring(0, 4) == 'http'){

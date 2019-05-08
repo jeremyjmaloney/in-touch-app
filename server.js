@@ -79,7 +79,7 @@ app.get('/' , (req, res) => {
 
 app.get('/app', (req, res) => {
   if(req.session.currentUser){
-    Message.find({'room': 'main'}, (error, allMessages)=> {
+    Message.find({'room': 'family'}, (error, allMessages)=> {
       res.render('app/index.ejs', {
         messages: allMessages,
         user: req.session.currentUser
@@ -91,10 +91,38 @@ app.get('/app', (req, res) => {
   };
 });
 
-app.get('/app/development', (req, res) => {
+app.get('/app/events', (req, res) => {
   if(req.session.currentUser){
-    Message.find({'room': 'dev'}, (error, allMessages)=> {
-      res.render('app/development.ejs', {
+    Message.find({'room': 'events'}, (error, allMessages)=> {
+      res.render('app/events.ejs', {
+        messages: allMessages,
+        user: req.session.currentUser
+      });
+      console.log(req.session.currentUser._id);
+    });
+  } else {
+    res.redirect('/sessions/new');
+  };
+});
+
+app.get('/app/girltalk', (req, res) => {
+  if(req.session.currentUser){
+    Message.find({'room': 'girltalk'}, (error, allMessages)=> {
+      res.render('app/girltalk.ejs', {
+        messages: allMessages,
+        user: req.session.currentUser
+      });
+      console.log(req.session.currentUser._id);
+    });
+  } else {
+    res.redirect('/sessions/new');
+  };
+});
+
+app.get('/app/mancave', (req, res) => {
+  if(req.session.currentUser){
+    Message.find({'room': 'mancave'}, (error, allMessages)=> {
+      res.render('app/mancave.ejs', {
         messages: allMessages,
         user: req.session.currentUser
       });

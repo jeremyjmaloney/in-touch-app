@@ -40,8 +40,8 @@ a {
 }
 .room {
   font-size: 1.5em;
-  padding-top: 5%;
-  padding-bottom: 5%;
+  padding-top: 10%;
+  padding-bottom: 10%;
   margin: 15% auto;
 }
 .active {
@@ -109,4 +109,5 @@ input[type=submit]{
   font-size: 3em;
   margin-left: 2%;
   background-color: #ff6a68;
+  color: white;
 }
