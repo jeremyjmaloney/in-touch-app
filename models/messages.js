@@ -5,7 +5,7 @@ const messageSchema = Schema({
   name: String,
   message: {type:String, required:true},
   room: String
-});
+}, {timestamps:true});
 
 const Message = mongoose.model('Message', messageSchema);
 
